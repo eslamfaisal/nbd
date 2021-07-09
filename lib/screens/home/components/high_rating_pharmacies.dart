@@ -1,4 +1,5 @@
 import 'package:NBD/screens/doctors/pharmacy_content.dart';
+import 'package:NBD/screens/pharmacy_panel/pharmacy_panel.dart';
 import 'package:flutter/material.dart';
 
 import '../../../size_config.dart';
@@ -19,7 +20,7 @@ class HighRatingPharmacies extends StatelessWidget {
           child: SectionTitle(
             title: "High Rating Pharmacies",
             press: () {
-              Navigator.pushNamed(context, PharmacyContent.routeName);
+              Navigator.pushNamed(context, PharmaciesHome.routeName);
             },
           ),
         ),
@@ -34,7 +35,7 @@ class HighRatingPharmacies extends StatelessWidget {
                 rating: 4.5,
                 //numOfBrands: 4,
                 press: () {
-                  Navigator.pushNamed(context, PharmacyContent.routeName);
+                  Navigator.pushNamed(context, PharmaciesHome.routeName);
                 },
               ),
               SpecialOfferCard(
@@ -43,7 +44,7 @@ class HighRatingPharmacies extends StatelessWidget {
                 rating: 4.5,
                 //numOfBrands: 4,
                 press: () {
-                  Navigator.pushNamed(context, PharmacyContent.routeName);
+                  Navigator.pushNamed(context, PharmaciesHome.routeName);
                 },
               ),
               SpecialOfferCard(

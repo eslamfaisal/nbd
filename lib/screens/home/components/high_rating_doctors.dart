@@ -1,13 +1,26 @@
+import 'package:NBD/models/UserModel.dart';
 import 'package:NBD/screens/doctors/doctor_content.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
 import '../../../size_config.dart';
 import 'section_title.dart';
 
-class HighRatingDoctors extends StatelessWidget {
+class HighRatingDoctors extends StatefulWidget {
   const HighRatingDoctors({
     Key key,
   }) : super(key: key);
+
+  @override
+  _HighRatingDoctorsState createState() => _HighRatingDoctorsState();
+}
+
+class _HighRatingDoctorsState extends State<HighRatingDoctors> {
+  @override
+  void initState() {
+    getDoctors();
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -15,9 +28,9 @@ class HighRatingDoctors extends StatelessWidget {
       children: [
         Padding(
           padding:
-              EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(20)),
+          EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(20)),
           child: SectionTitle(
-            title: "High Rating Doctors",
+            title: "Doctors",
             press: () {
               Navigator.pushNamed(context, DoctorsContent.routeName);
             },
@@ -28,37 +41,49 @@ class HighRatingDoctors extends StatelessWidget {
           scrollDirection: Axis.horizontal,
           child: Row(
             children: [
-              SpecialOfferCard(
-                image: "assets/images/doctor_1.png",
-                category: "Dr.Adel\nSr.Psychologist",
-                rating: 4.5,
-                press: () {
-                  Navigator.pushNamed(context, DoctorsContent.routeName);
-                },
-              ),
-              SpecialOfferCard(
-                image: "assets/images/doctor_1.png",
-                category: "Dr.Adel\nSr.Psychologist",
-                rating: 4.5,
-                //numOfBrands: 4,
-                press: () {
-                  Navigator.pushNamed(context, DoctorsContent.routeName);
-                },
-              ),
-              SpecialOfferCard(
-                image: "assets/images/doctor_1.png",
-                category: "Dr.Adel\nSr.Psychologist",
-                rating: 4.5,
-                //numOfBrands: 4,
-                press: () {
-                  Navigator.pushNamed(context, DoctorsContent.routeName);
-                },
-              ),
+              ...doctorsWidgets,
               SizedBox(width: getProportionateScreenWidth(20)),
             ],
           ),
         ),
       ],
+    );
+  }
+
+  List<UserModel> doctors = [];
+  List<Widget> doctorsWidgets=[];
+
+  void getDoctors() {
+    FirebaseFirestore.instance
+        .collection('users')
+        .where("type", isEqualTo: "Doctor")
+        .get()
+        .then((value) {
+      value.docs.forEach((element) {
+        UserModel doctor = UserModel.fromJson(element.data());
+        doctors.add(doctor);
+        doctorsWidgets.add(dctorWidget(doctor));
+        setState(() {
+
+        });
+      });
+    });
+  }
+
+  Widget dctorWidget(UserModel doctor) {
+    return SpecialOfferCard(
+      image: "assets/images/doctor_1.png",
+      category: doctor.first_name + ' '+doctor.last_name,
+      rating: 4.5,
+      //numOfBrands: 4,
+      press: () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => DoctorsContent(doctor),
+          ),
+        );
+      },
     );
   }
 }
@@ -74,6 +99,7 @@ class SpecialOfferCard extends StatelessWidget {
   }) : super(key: key);
 
   final String category, image;
+
   //final int numOfBrands;
   final double rating;
   final GestureTapCallback press;

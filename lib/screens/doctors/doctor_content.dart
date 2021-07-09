@@ -1,13 +1,27 @@
+import 'package:NBD/models/UserModel.dart';
 import 'package:NBD/screens/doctors/book_appoinment.dart';
 import 'package:NBD/size_config.dart';
 import 'package:flutter/material.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import '../../constants.dart';
 
 class DoctorsContent extends StatelessWidget {
   static String routeName = "/doctor_content";
+  UserModel doctor;
+  DoctorsContent(this.doctor);
+
+  Future<void> _makePhoneCall(String url) async {
+    if (await canLaunch(url)) {
+      await launch(url);
+    } else {
+      throw 'Could not launch $url';
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
+
     return SafeArea(
       child: Scaffold(
           body: Column(
@@ -54,15 +68,13 @@ class DoctorsContent extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
-                  Text(
-                    'Dr.\rAdel',
+                  Text(doctor.first_name ,
                     style: TextStyle(
                         fontSize: 26,
                         fontWeight: FontWeight.bold,
                         color: Colors.blue[900]),
                   ),
-                  Text(
-                    'Sr.\rPsychologist',
+                  Text(doctor.last_name,
                     style: TextStyle(
                         fontSize: 20,
                         fontWeight: FontWeight.bold,
@@ -82,7 +94,10 @@ class DoctorsContent extends StatelessWidget {
                           borderRadius: BorderRadius.circular(45),
                         ),
                         child: IconButton(
-                            icon: Icon(Icons.call), onPressed: () {}),
+                            icon: Icon(Icons.call), onPressed: () {
+                          _makePhoneCall('tel:+${ doctor.phone .toString()}');
+
+                        }),
                       ),
                       SizedBox(
                         width: getProportionateScreenWidth(20),
@@ -195,7 +210,12 @@ class DoctorsContent extends StatelessWidget {
                     // ignore: deprecated_member_use
                     child: RaisedButton(
                       onPressed: () {
-                        Navigator.pushNamed(context, BookAppointment.routeName);
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => BookAppointment(doctor),
+                          ),
+                        );
                       },
                       child: Text(
                         'Book Appointment',

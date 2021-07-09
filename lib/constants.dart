@@ -1,6 +1,9 @@
+import 'package:NBD/models/UserModel.dart';
 import 'package:flutter/material.dart';
 import 'package:NBD/size_config.dart';
 
+
+UserModel currentUser;
 const kPrimaryColor = Color(0xFF187CFD);
 const kPrimaryLightColor = Color(0xFFFFECDF);
 const kOrangeColor = Color(0xffEF716B);

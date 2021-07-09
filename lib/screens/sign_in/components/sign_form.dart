@@ -1,3 +1,8 @@
+import 'package:NBD/models/UserModel.dart';
+import 'package:NBD/screens/doctor_panel/doctor_home.dart';
+import 'package:NBD/screens/home/home_screen.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:NBD/components/custom_surfix_icon.dart';
 import 'package:NBD/components/form_error.dart';
@@ -72,12 +77,32 @@ class _SignFormState extends State<SignForm> {
           SizedBox(height: getProportionateScreenHeight(20)),
           DefaultButton(
             text: "Continue",
-            press: () {
+            press: () async {
               if (_formKey.currentState.validate()) {
                 _formKey.currentState.save();
                 // if all are valid then go to success screen
-                KeyboardUtil.hideKeyboard(context);
-                Navigator.pushNamed(context, LoginSuccessScreen.routeName);
+
+                await FirebaseAuth.instance
+                    .signInWithEmailAndPassword(
+                        email: email, password: password)
+                    .then(
+                  (value) async {
+                    await FirebaseFirestore.instance
+                        .collection('users')
+                        .doc(value.user.uid)
+                        .get()
+                        .then(
+                      (value) {
+                        currentUser = UserModel.fromJson(value.data());
+                        KeyboardUtil.hideKeyboard(context);
+                        if(currentUser.type =='User')
+                        Navigator.pushNamed(context, HomeScreen.routeName);
+                        else  Navigator.pushNamed(context, DoctorsHome.routeName);
+                      },
+                    );
+                  },
+                );
+
               }
             },
           ),
@@ -93,17 +118,12 @@ class _SignFormState extends State<SignForm> {
       onChanged: (value) {
         if (value.isNotEmpty) {
           removeError(error: kPassNullError);
-        } else if (value.length >= 8) {
-          removeError(error: kShortPassError);
         }
         return null;
       },
       validator: (value) {
         if (value.isEmpty) {
           addError(error: kPassNullError);
-          return "";
-        } else if (value.length < 8) {
-          addError(error: kShortPassError);
           return "";
         }
         return null;
@@ -134,9 +154,6 @@ class _SignFormState extends State<SignForm> {
       validator: (value) {
         if (value.isEmpty) {
           addError(error: kEmailNullError);
-          return "";
-        } else if (!emailValidatorRegExp.hasMatch(value)) {
-          addError(error: kInvalidEmailError);
           return "";
         }
         return null;

@@ -1,4 +1,5 @@
 import 'package:NBD/models/UserModel.dart';
+import 'package:NBD/screens/doctor_panel/doctor_home.dart';
 import 'package:NBD/screens/home/home_screen.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dropdown_plus/dropdown_plus.dart';
@@ -79,14 +80,17 @@ class _SignUpFormState extends State<SignUpForm> {
                     .createUserWithEmailAndPassword(
                         email: email, password: password)
                     .then((value) {
+                      currentUser = UserModel(value.user.uid, firstName, lastName, email,
+                          phone, address, type);
                   FirebaseFirestore.instance
                       .collection("users")
                       .doc(value.user.uid)
-                      .set(UserModel(value.user.uid, firstName, lastName, email,
-                              phone, address, type)
-                          .toJson())
+                      .set(currentUser.toJson())
                       .then((value) {
-                    Navigator.pushNamed(context, HomeScreen.routeName);
+                    if (type == 'User')
+                      Navigator.pushNamed(context, HomeScreen.routeName);
+                    else
+                      Navigator.pushNamed(context, DoctorsHome.routeName);
                   });
                 });
               }
@@ -129,7 +133,7 @@ class _SignUpFormState extends State<SignUpForm> {
     return Container(
       width: double.infinity,
       decoration: BoxDecoration(
-          border: Border.all(color: Colors.grey),
+        border: Border.all(color: Colors.grey),
         borderRadius: BorderRadius.circular(28),
       ),
       child: Padding(

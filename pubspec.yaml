@@ -27,6 +27,8 @@ dependencies:
   firebase_core: ^1.1.1
   firebase_auth: ^1.1.4
   intl: ^0.17.0
+  scrollable_positioned_list: ^0.1.10
+  url_launcher: ^6.0.9
 #  otp: ^2.2.3
 #  pinput: ^1.2.0
 

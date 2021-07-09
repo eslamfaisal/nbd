@@ -1,5 +1,8 @@
 import 'package:NBD/components/textField.dart';
+import 'package:NBD/models/Appointment.dart';
+import 'package:NBD/models/UserModel.dart';
 import 'package:NBD/size_config.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
@@ -7,10 +10,15 @@ import '../../constants.dart';
 
 // ignore: must_be_immutable
 class BookAppointment extends StatelessWidget {
+  UserModel doctor;
+
+  BookAppointment(this.doctor);
+
   static String routeName = "/Book Appointment";
   var timeController = TextEditingController();
   var dateController = TextEditingController();
   var formKey = GlobalKey<FormState>();
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -138,7 +146,30 @@ class BookAppointment extends StatelessWidget {
                         width: double.infinity,
                         // ignore: deprecated_member_use
                         child: RaisedButton(
-                          onPressed: () {},
+                          onPressed: () {
+                            String id = FirebaseFirestore.instance
+                                .collection('appointments').doc()
+                                .id;
+                            AppointmentModel appointment = AppointmentModel(
+                              id,
+                              timeController.value.text.toString(),
+                              dateController.value.text.toString(),
+                              currentUser.id,
+                              currentUser.first_name +
+                                  ' ' +
+                                  currentUser.last_name,
+                              doctor.id,
+                              currentUser.phone
+                            );
+
+                            FirebaseFirestore.instance
+                                .collection('appointments')
+                                .doc(id)
+                                .set(appointment.toJson())
+                                .then((value) {
+                              Navigator.pop(context);
+                            });
+                          },
                           child: Text(
                             'Book Appointment',
                             style: TextStyle(

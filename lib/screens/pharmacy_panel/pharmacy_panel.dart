@@ -31,17 +31,11 @@ class PharmaciesHome extends StatelessWidget {
           Expanded(
             child: Padding(
               padding: const EdgeInsets.all(8.0),
-              child: ListView.separated(
-                  physics: BouncingScrollPhysics(),
-                  itemBuilder: (context, index) => buildAppointmentItem(),
-                  separatorBuilder: (context, index) => Padding(
-                        padding: const EdgeInsets.only(left: 50.0, right: 50),
-                        child: Container(
-                          height: 1,
-                          color: Colors.black,
-                        ),
-                      ),
-                  itemCount: 10),
+              child: Column(children: [
+                buildAppointmentItem("Shanpo", 25),
+                buildAppointmentItem("Elveve", 50),
+                // buildAppointmentItem("Chiled oil", 25),
+              ],),
             ),
           ),
           Container(
@@ -67,7 +61,7 @@ class PharmaciesHome extends StatelessWidget {
     );
   }
 
-  Widget buildAppointmentItem() => Container(
+  Widget buildAppointmentItem(String name,int price) => Container(
         child: Padding(
           padding: const EdgeInsets.all(20.0),
           child: Column(
@@ -82,75 +76,9 @@ class PharmaciesHome extends StatelessWidget {
                     width: 20,
                   ),
                   Expanded(
-                    child: Text('Ahmed Mohamed Esmail mohammed asbdahsdn',
+                    child: Text(name,
                         overflow: TextOverflow.ellipsis,
                         maxLines: 1,
-                        style: TextStyle(
-                          fontSize: 18,
-                        )),
-                  )
-                ],
-              ),
-              SizedBox(
-                height: 10,
-              ),
-              Row(
-                children: [
-                  Icon(
-                    Icons.phone_enabled_outlined,
-                    color: kSecondaryColor,
-                  ),
-                  SizedBox(
-                    width: 20,
-                  ),
-                  Expanded(
-                    child: Text('01000000000',
-                        overflow: TextOverflow.ellipsis,
-                        maxLines: 2,
-                        style: TextStyle(
-                          fontSize: 18,
-                        )),
-                  )
-                ],
-              ),
-              SizedBox(
-                height: 10,
-              ),
-              Row(
-                children: [
-                  Icon(
-                    Icons.location_on_outlined,
-                    color: kSecondaryColor,
-                  ),
-                  SizedBox(
-                    width: 20,
-                  ),
-                  Expanded(
-                    child: Text('villa 471, El-Shorouk, Cairo ',
-                        overflow: TextOverflow.ellipsis,
-                        maxLines: 3,
-                        style: TextStyle(
-                          fontSize: 18,
-                        )),
-                  )
-                ],
-              ),
-              SizedBox(
-                height: 10,
-              ),
-              Row(
-                children: [
-                  Icon(
-                    Icons.note_outlined,
-                    color: kSecondaryColor,
-                  ),
-                  SizedBox(
-                    width: 20,
-                  ),
-                  Expanded(
-                    child: Text('Conjestal \nComtrex 500',
-                        overflow: TextOverflow.ellipsis,
-                        maxLines: 15,
                         style: TextStyle(
                           fontSize: 18,
                         )),
@@ -170,7 +98,7 @@ class PharmaciesHome extends StatelessWidget {
                     width: 20,
                   ),
                   Expanded(
-                    child: Text('100 EGP',
+                    child: Text(price.toString()+' EG',
                         overflow: TextOverflow.ellipsis,
                         maxLines: 2,
                         style: TextStyle(
@@ -197,7 +125,7 @@ class PharmaciesHome extends StatelessWidget {
                       child: RaisedButton(
                         onPressed: () {},
                         child: Text(
-                          'Accept',
+                          'Buy',
                           style: TextStyle(
                               fontSize: 16,
                               color: Colors.white,
@@ -209,27 +137,7 @@ class PharmaciesHome extends StatelessWidget {
                       ),
                     ),
                   ),
-                  Padding(
-                    padding: const EdgeInsets.only(bottom: 20.0),
-                    child: Container(
-                      height: 40,
-                      width: 100,
-                      // ignore: deprecated_member_use
-                      child: RaisedButton(
-                        onPressed: () {},
-                        child: Text(
-                          'Decline',
-                          style: TextStyle(
-                              fontSize: 16,
-                              color: Colors.white,
-                              fontWeight: FontWeight.bold),
-                        ),
-                        shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(30)),
-                        color: Colors.blue[900],
-                      ),
-                    ),
-                  ),
+
                 ],
               ),
             ],
