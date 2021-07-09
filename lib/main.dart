@@ -1,12 +1,11 @@
 import 'package:NBD/screens/doctor_panel/doctor_home.dart';
 import 'package:NBD/screens/lab_panel/lab_panel.dart';
 import 'package:NBD/screens/pharmacy_panel/pharmacy_panel.dart';
+import 'package:NBD/screens/splash/splash_screen.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:NBD/routes.dart';
 import 'package:NBD/theme.dart';
-
-import 'screens/splash/splash_screen.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();

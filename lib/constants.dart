@@ -36,8 +36,9 @@ const String kInvalidEmailError = "Please Enter Valid Email";
 const String kPassNullError = "Please Enter your password";
 const String kShortPassError = "Password is too short";
 const String kMatchPassError = "Passwords don't match";
-const String kNamelNullError = "Please Enter your name";
-const String kPhoneNumberNullError = "Please Enter your phone number";
+const String kFirstNameNullError = "Please Enter your first name";
+const String kLastNameNullError = "Please Enter your last name";
+const String kTypeNullError = "Please Enter your type";
 const String kAddressNullError = "Please Enter your address";
 
 final otpInputDecoration = InputDecoration(
